@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6009c83824edbc046a61866a8d2e1d07, type: 3}
+  m_Name: StageOneCategories
+  m_EditorClassIdentifier: 
+  buttonCategories:
+  - categoryName: Clothing
+    categoryIcon: {fileID: 2800000, guid: 8c8d8d61a3488984ea43b5ea422db6be, type: 3}
+    assetFolderPath: Clothing
+    tooltip: THIS IS A TOOLTIP MENU
+  - categoryName: EyeColor
+    categoryIcon: {fileID: 2800000, guid: 45de566a4d2dbfe4fb2ad6c3c3ff0b22, type: 3}
+    assetFolderPath: EyeColor
+    tooltip: 
+  - categoryName: HairColor
+    categoryIcon: {fileID: 2800000, guid: 4f6027229b455a04482f63cdacc8d13f, type: 3}
+    assetFolderPath: HairColor
+    tooltip: 
+  sliderCategories:
+  - categoryName: Weight
+    categoryIcon: {fileID: 2800000, guid: a8b53e35faafb94468ab1e3f08ec4c78, type: 3}
+    minValue: 0
+    maxValue: 100
+    defaultValue: 50
+    isSpecialSlider: 0
+  - categoryName: Height
+    categoryIcon: {fileID: 2800000, guid: a8b53e35faafb94468ab1e3f08ec4c78, type: 3}
+    minValue: 140
+    maxValue: 210
+    defaultValue: 165
+    isSpecialSlider: 1
