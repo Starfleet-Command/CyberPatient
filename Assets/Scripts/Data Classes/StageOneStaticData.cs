@@ -17,5 +17,6 @@ public class StageOneStaticData : MonoBehaviour
     public  BodyPartRepository bodyPartListScript;
     public  UI_Orchestrator avatarUpdateScript;
     public  MeshSwapper meshSwapperScript;
+    public  TextureModifier textureModifierScript;
     public  CategoryDefinitionObject allCategories;
 }

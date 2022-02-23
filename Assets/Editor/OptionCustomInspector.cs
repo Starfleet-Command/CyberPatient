@@ -42,14 +42,14 @@
         if (script.buttonType == StageOneOptionObject.Types.Texture_Color)
         {
             EditorGUILayout.PropertyField(associatedAttributeProp, new GUIContent("Attribute Name"));
-            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Texture Option"));
-            EditorGUILayout.PropertyField(associatedColorProp, new GUIContent("Color Option"));
+            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Material"));
+            EditorGUILayout.PropertyField(associatedColorProp, new GUIContent("Color"));
             
         }
 
         else if(script.buttonType == StageOneOptionObject.Types.Texture_New)
         {
-            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Texture Option"));
+            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Material"));
         }
         else if(script.buttonType == StageOneOptionObject.Types.Mesh)
         {
@@ -59,7 +59,7 @@
         else if(script.buttonType == StageOneOptionObject.Types.Texture_Attribute)
         {
             EditorGUILayout.PropertyField(associatedAttributeProp, new GUIContent("Attribute Name"));
-            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Texture Option"));
+            EditorGUILayout.PropertyField(associatedTextureProp, new GUIContent("Material"));
             EditorGUILayout.PropertyField(newValueProp, new GUIContent("Attribute Value"));
         }
 

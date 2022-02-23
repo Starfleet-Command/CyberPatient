@@ -55,7 +55,6 @@ public class ModelDataController : MonoBehaviour
 
         for (int j = 0; j<iconsToGenerate.Length; j++)
         {
-            //TODO: Add buttons and make it so images appear with buttons and store value
             levelData.imageInstantiatorScript.InstantiateButtonMenuItem(iconsToGenerate[j]);
         }
     }
@@ -75,16 +74,15 @@ public class ModelDataController : MonoBehaviour
         levelData.blendShapeScript.ChangeBlendShape(blendShapeIndex, newValue);
     }
 
-    public void DynamicTextureChangeOnSelect()
-    {
-     // Not implemented
-    }
-
+    /// <summary>
+    /// This function changes the height of the entire avatar, and it is called when the height slider is changed. 
+    /// </summary>
+    /// <param name="newHeight">
+    /// The value that the height will be changed to. This value is provided by the ConvertHeightToScale() translation in SliderInstantiator
+    /// </param>
     public void ChangeModelHeight(float newHeight)
     {
-        GameObject avatarObject;
-        avatarObject = levelData.avatarObject;
-        avatarObject.transform.localScale = new Vector3(newHeight,newHeight,newHeight);
+        levelData.avatarObject.transform.localScale = new Vector3(newHeight,newHeight,newHeight);
     }
 
     public void ResetAllValues()

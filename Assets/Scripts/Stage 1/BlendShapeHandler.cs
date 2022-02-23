@@ -78,7 +78,7 @@ public class BlendShapeHandler : MonoBehaviour
     /// </param>
     public void ChangeBlendShape(int shapeIndex, float shapeValue)
     {
-        if(meshRenderer!= null)
+        if(meshRenderer!= null && meshRenderer.sharedMesh.blendShapeCount>shapeIndex)
         {
             meshRenderer.SetBlendShapeWeight(shapeIndex,shapeValue); 
             blendShapeValues[shapeIndex] = shapeValue;

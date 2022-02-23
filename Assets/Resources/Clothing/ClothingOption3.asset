@@ -17,6 +17,6 @@ MonoBehaviour:
   bodyPartIndex: 1
   associatedAttribute: 
   associatedColor: {r: 0, g: 0, b: 0, a: 0}
-  associatedMesh: {fileID: 919132149155446097, guid: 539401f47972d584494ca717a679bce1, type: 3}
+  associatedMesh: {fileID: 919132149155446097, guid: 05cef5a9d32fb1548913857c144a1f49, type: 3}
   associatedTexture: {fileID: 0}
   newValue: 0

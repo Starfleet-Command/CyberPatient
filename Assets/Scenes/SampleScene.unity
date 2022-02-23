@@ -375,6 +375,7 @@ MonoBehaviour:
   bodyPartListScript: {fileID: 1220491561}
   avatarUpdateScript: {fileID: 1220491560}
   meshSwapperScript: {fileID: 1220491559}
+  textureModifierScript: {fileID: 1220491562}
   allCategories: {fileID: 11400000, guid: 2932047bd64892046b465429a1f0c2bf, type: 2}
 --- !u!1 &208413410
 GameObject:
@@ -1756,6 +1757,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220491558}
   - component: {fileID: 1220491559}
+  - component: {fileID: 1220491562}
   - component: {fileID: 1220491560}
   - component: {fileID: 1220491561}
   m_Layer: 0
@@ -1804,7 +1806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshSwapScript: {fileID: 1220491559}
-  textureSwapScript: {fileID: 0}
+  textureSwapScript: {fileID: 1220491562}
+  colorAttributeName: _MainColor
 --- !u!114 &1220491561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1823,20 +1826,42 @@ MonoBehaviour:
     bodyPartMaterial:
     - {fileID: 2100000, guid: 3829d7d2983da5a4398028f09dcd0580, type: 2}
     bodyPartMesh: {fileID: 4006561389724856334}
+    textureLinkedBodyParts:
+    - {fileID: 1551249885}
   - name: Torso
     bodyPartParent: {fileID: 1551249885}
     bodyPartMaterial:
     - {fileID: 2100000, guid: 3829d7d2983da5a4398028f09dcd0580, type: 2}
     bodyPartMesh: {fileID: 919132147885171705}
+    textureLinkedBodyParts:
+    - {fileID: 302373533}
   initialBodyParts:
   - name: Head
     bodyPartParent: {fileID: 302373533}
-    bodyPartMaterial: []
+    bodyPartMaterial:
+    - {fileID: 2100000, guid: 3829d7d2983da5a4398028f09dcd0580, type: 2}
     bodyPartMesh: {fileID: 4006561390054813350, guid: 79b6147a1c85d10438872b3cf55e7df7, type: 3}
+    textureLinkedBodyParts:
+    - {fileID: 1551249885}
   - name: Torso
     bodyPartParent: {fileID: 1551249885}
-    bodyPartMaterial: []
+    bodyPartMaterial:
+    - {fileID: 2100000, guid: 3829d7d2983da5a4398028f09dcd0580, type: 2}
     bodyPartMesh: {fileID: -3089815855134457114, guid: 79b6147a1c85d10438872b3cf55e7df7, type: 3}
+    textureLinkedBodyParts:
+    - {fileID: 302373533}
+--- !u!114 &1220491562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220491557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ec3256b0546284b842421796e80ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1373820278
 GameObject:
   m_ObjectHideFlags: 0
