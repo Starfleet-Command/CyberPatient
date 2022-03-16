@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thumbnail: {fileID: 2800000, guid: 59d219c4702ad154f84df6328525ece0, type: 3}
   buttonType: 3
-  bodyPartIndex: 1
+  bodyPartIndex: 2
   associatedAttribute: 
   associatedColor: {r: 0, g: 0, b: 0, a: 0}
-  associatedMesh: {fileID: 919132149155446097, guid: 378f9beccdf0076479fa1ae64281138f, type: 3}
+  meshOptionIndex: 1
   associatedTexture: {fileID: 0}
   newValue: 0

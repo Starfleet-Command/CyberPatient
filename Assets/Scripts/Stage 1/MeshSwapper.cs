@@ -26,7 +26,7 @@ public class MeshSwapper : MonoBehaviour
     public void SwapMesh(int meshIndex, GameObject newMesh)
     {
         GameObject currentMesh = bodyPartList.bodyParts[meshIndex].bodyPartMesh;
-        List<Material> meshMaterials = levelData.textureModifierScript.getAllMaterialsFromObject(currentMesh);
+        List<Material> meshMaterials = MaterialUtilities.getAllMaterialsFromObject(currentMesh);
 
         if(!GameObject.ReferenceEquals(currentMesh, newMesh))
         {
@@ -42,6 +42,47 @@ public class MeshSwapper : MonoBehaviour
 
             levelData.textureModifierScript.CopyTextures(_meshInstance,meshMaterials);
             
+        }
+        
+    }
+
+    public void SwapMesh(BodyPartEnum _part, int _partIndex )
+    {
+        BodyPart partToChange;
+        int currentIndex = 0;
+        partToChange = BodyPart.GetPartByName(_part, bodyPartList.bodyParts);
+
+
+        Component[] arrayOfChildren = partToChange.bodyPartParent.GetComponentsInChildren<Transform>(true);
+
+        List<Component> listOfChildren = new List<Component>(arrayOfChildren);
+        listOfChildren.Remove(partToChange.bodyPartParent.transform);
+
+        if(_partIndex < listOfChildren.Count)
+        {
+            foreach (Transform child in listOfChildren)
+            {
+                if(currentIndex == _partIndex)
+                {
+                    List<Material> meshMaterials = new List<Material>(MaterialUtilities.getAllMaterialsFromObject(partToChange.bodyPartMesh));
+                    
+                    child.gameObject.SetActive(true);
+                    StageOneEventManager.SelectedMeshChanged(child.gameObject);
+
+
+                    listOfChildren.Remove(child);
+                    foreach (Transform restChild in listOfChildren)
+                    {
+                        
+                        restChild.gameObject.SetActive(false);
+                    }
+                    
+                    levelData.textureModifierScript.CopyTextures(child.gameObject,meshMaterials);
+                    break;
+                }
+
+                currentIndex++;
+            }
         }
         
     }

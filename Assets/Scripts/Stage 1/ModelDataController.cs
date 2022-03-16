@@ -13,7 +13,8 @@ public class ModelDataController : MonoBehaviour
         
         blendShapeCount = levelData.blendShapeScript.getBlendShapeCount();
         
-        PopulateUI(levelData.allCategories.sliderCategories,levelData.allCategories.buttonCategories);
+        PopulateUI(levelData.allCategories);
+       
     }
 
     /// <summary>
@@ -25,37 +26,64 @@ public class ModelDataController : MonoBehaviour
     /// <param name="iconsToGenerate">
     /// The array of icon categories that will be turned into a UI icon button-
     /// </param>
-    private void PopulateUI(SliderCategory[] slidersToGenerate,ImageCategory[] iconsToGenerate)
+    private void PopulateUI(CategoryDefinitionObject primaryButtonData)
     {
-        if(blendShapeCount>=slidersToGenerate.Length-levelData.specialSliderCount)
+
+        GeneratePrimaryButtons(primaryButtonData,levelData.primaryButtonsPerPage,1);
+        
+    }
+
+
+    public void GeneratePrimaryButtons(CategoryDefinitionObject primaryButtonData, int amountToGenerate, int pageIndex)
+    {
+        ImageCategory[] iconsToGenerate = primaryButtonData.buttonCategories;
+        SliderCategory[] slidersToGenerate = primaryButtonData.sliderCategories;
+
+        levelData.imageInstantiatorScript.ResetButtonMenu();
+
+        //If the buttons to generate are image categories only
+        if(iconsToGenerate.Length >= (amountToGenerate*pageIndex))
         {
-            for (int i = 0; i<slidersToGenerate.Length; i++)
+            for (int j = amountToGenerate*(pageIndex-1); j < amountToGenerate*pageIndex; j++)
             {
-                if(slidersToGenerate[i].isSpecialSlider)
-                {
-                    levelData.sliderInstantiatorScript.InstantiateSlider(slidersToGenerate[i],true);
-                }
-                else
-                    levelData.sliderInstantiatorScript.InstantiateSlider(slidersToGenerate[i],false);
+                levelData.imageInstantiatorScript.InstantiateButtonMenuItem(iconsToGenerate[j]);
+            }
+        }
+        //If there is a mix between image and slider categories
+        else if((iconsToGenerate.Length+slidersToGenerate.Length)>= (amountToGenerate*pageIndex))
+        {
+            for (int j = amountToGenerate*(pageIndex-1); j<iconsToGenerate.Length; j++)
+            {
+                levelData.imageInstantiatorScript.InstantiateButtonMenuItem(iconsToGenerate[j]);
             }
 
-            
+            for (int i = 0; i< (amountToGenerate*pageIndex)-iconsToGenerate.Length; i++)
+            {
+                levelData.imageInstantiatorScript.InstantiateButtonMenuItem(slidersToGenerate[i]);
+            }
+        }
+        //If the buttons are slider categories only.
+        else
+        {
+            for (int i = (amountToGenerate*(pageIndex-1))-iconsToGenerate.Length; i<slidersToGenerate.Length;i++)
+            {
+                levelData.imageInstantiatorScript.InstantiateButtonMenuItem(slidersToGenerate[i]);
+            }
+        }
+
+    }
+
+
+    public void GenerateSlider(SliderCategory sliderToGenerate, bool isSpecialSlider)
+    {
+        if(isSpecialSlider)
+        {
+            levelData.sliderInstantiatorScript.InstantiateSlider(sliderToGenerate,true);
         }
 
         else
         {
-            Debug.LogWarning("Attempting to generate more sliders than mesh has blend shapes.");
-
-            for (int i = 0; i<blendShapeCount; i++)
-            {
-                levelData.sliderInstantiatorScript.InstantiateSlider(slidersToGenerate[i],false);
-            }
-            levelData.sliderInstantiatorScript.InstantiateSlider(slidersToGenerate[slidersToGenerate.Length-1],true);
-        }
-
-        for (int j = 0; j<iconsToGenerate.Length; j++)
-        {
-            levelData.imageInstantiatorScript.InstantiateButtonMenuItem(iconsToGenerate[j]);
+            levelData.sliderInstantiatorScript.InstantiateSlider(sliderToGenerate,false);
         }
     }
 
@@ -74,21 +102,12 @@ public class ModelDataController : MonoBehaviour
         levelData.blendShapeScript.ChangeBlendShape(blendShapeIndex, newValue);
     }
 
-    /// <summary>
-    /// This function changes the height of the entire avatar, and it is called when the height slider is changed. 
-    /// </summary>
-    /// <param name="newHeight">
-    /// The value that the height will be changed to. This value is provided by the ConvertHeightToScale() translation in SliderInstantiator
-    /// </param>
-    public void ChangeModelHeight(float newHeight)
-    {
-        levelData.avatarObject.transform.localScale = new Vector3(newHeight,newHeight,newHeight);
-    }
 
     public void ResetAllValues()
     {
         levelData.sliderInstantiatorScript.InitSliderValues();
         levelData.bodyPartListScript.ResetTexturesAndMeshes();
     }
+
 
 }

@@ -1,0 +1,280 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2249e5f647914ce4bb974e18949d07a0, type: 3}
+  m_Name: VitalSignsConfig
+  m_EditorClassIdentifier: 
+  Categories:
+  - categoryName: Pulse - Regular
+    unitOfMeasurement: bpm
+    bounds:
+    - rangeName: Sinus Bradycardia
+      lowerBound: 0
+      upperBound: 45
+    - rangeName: Bradycardia
+      lowerBound: 45
+      upperBound: 60
+    - rangeName: Normal
+      lowerBound: 60
+      upperBound: 100
+    - rangeName: Tachycardia
+      lowerBound: 100
+      upperBound: 1000
+  - categoryName: Pulse - Irregular
+    unitOfMeasurement: bpm
+    bounds:
+    - rangeName: Sinus Bradycardia
+      lowerBound: 0
+      upperBound: 45
+    - rangeName: Bradycardia
+      lowerBound: 45
+      upperBound: 60
+    - rangeName: Normal
+      lowerBound: 60
+      upperBound: 100
+    - rangeName: Tachycardia
+      lowerBound: 100
+      upperBound: 1000
+  - categoryName: Respirations - Regular
+    unitOfMeasurement: /min
+    bounds:
+    - rangeName: Bradypnea
+      lowerBound: 0
+      upperBound: 12
+    - rangeName: Normal
+      lowerBound: 12
+      upperBound: 20
+    - rangeName: Tachypnea
+      lowerBound: 20
+      upperBound: 50
+  - categoryName: Respirations - Irregular
+    unitOfMeasurement: /min
+    bounds:
+    - rangeName: Bradypnea
+      lowerBound: 0
+      upperBound: 12
+    - rangeName: Normal
+      lowerBound: 12
+      upperBound: 20
+    - rangeName: Tachypnea
+      lowerBound: 20
+      upperBound: 50
+  - categoryName: Right Upper Blood Pressure - Systolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 100
+    - rangeName: Normal
+      lowerBound: 100
+      upperBound: 119
+    - rangeName: Pre-Hypertension
+      lowerBound: 120
+      upperBound: 139
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 140
+      upperBound: 159
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 160
+      upperBound: 200
+  - categoryName: Right Upper Blood Pressure - Diastolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 70
+    - rangeName: Normal
+      lowerBound: 70
+      upperBound: 79
+    - rangeName: Pre-Hypertension
+      lowerBound: 80
+      upperBound: 89
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 90
+      upperBound: 99
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 100
+      upperBound: 150
+  - categoryName: Left Upper Blood Pressure - Systolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 100
+    - rangeName: Normal
+      lowerBound: 100
+      upperBound: 119
+    - rangeName: Pre-Hypertension
+      lowerBound: 120
+      upperBound: 139
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 140
+      upperBound: 159
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 160
+      upperBound: 200
+  - categoryName: Left Upper Blood Pressure - Diastolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 70
+    - rangeName: Normal
+      lowerBound: 70
+      upperBound: 79
+    - rangeName: Pre-Hypertension
+      lowerBound: 80
+      upperBound: 89
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 90
+      upperBound: 99
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 100
+      upperBound: 150
+  - categoryName: Right Lower Blood Pressure - Systolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 100
+    - rangeName: Normal
+      lowerBound: 100
+      upperBound: 119
+    - rangeName: Pre-Hypertension
+      lowerBound: 120
+      upperBound: 139
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 140
+      upperBound: 159
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 160
+      upperBound: 200
+  - categoryName: Right Lower Blood Pressure - Diastolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 70
+    - rangeName: Normal
+      lowerBound: 70
+      upperBound: 79
+    - rangeName: Pre-Hypertension
+      lowerBound: 80
+      upperBound: 89
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 90
+      upperBound: 99
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 100
+      upperBound: 150
+  - categoryName: Left Lower Blood Pressure - Systolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 100
+    - rangeName: Normal
+      lowerBound: 100
+      upperBound: 119
+    - rangeName: Pre-Hypertension
+      lowerBound: 120
+      upperBound: 139
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 140
+      upperBound: 159
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 160
+      upperBound: 200
+  - categoryName: Left Lower Blood Pressure - Diastolic
+    unitOfMeasurement: mmHg
+    bounds:
+    - rangeName: Hypotension
+      lowerBound: 0
+      upperBound: 70
+    - rangeName: Normal
+      lowerBound: 70
+      upperBound: 79
+    - rangeName: Pre-Hypertension
+      lowerBound: 80
+      upperBound: 89
+    - rangeName: Stage 1 Hypertension
+      lowerBound: 90
+      upperBound: 99
+    - rangeName: Stage 2 Hypertension
+      lowerBound: 100
+      upperBound: 150
+  - categoryName: Temperature
+    unitOfMeasurement: C
+    bounds:
+    - rangeName: Severe Hypothermia
+      lowerBound: 0
+      upperBound: 28
+    - rangeName: Moderate Hypothermia
+      lowerBound: 28
+      upperBound: 31.9
+    - rangeName: Mild Hypothermia
+      lowerBound: 32
+      upperBound: 35.9
+    - rangeName: Normal
+      lowerBound: 36
+      upperBound: 38
+    - rangeName: Mild Fever
+      lowerBound: 38.1
+      upperBound: 39
+    - rangeName: Moderate Fever
+      lowerBound: 39.1
+      upperBound: 40
+    - rangeName: High Grade Fever
+      lowerBound: 40.1
+      upperBound: 41.1
+    - rangeName: Hyperpyrexia
+      lowerBound: 41.1
+      upperBound: 50
+  - categoryName: O2 Saturation
+    unitOfMeasurement: '%'
+    bounds:
+    - rangeName: 
+      lowerBound: 0
+      upperBound: 100
+  nonEditableCategories:
+  - categoryName: Weight
+    unitOfMeasurement: Kg
+    bounds:
+    - rangeName: 
+      lowerBound: 0.5
+      upperBound: 250
+  - categoryName: Height
+    unitOfMeasurement: Cm
+    bounds:
+    - rangeName: 
+      lowerBound: 40
+      upperBound: 250
+  - categoryName: BMI
+    unitOfMeasurement: Kg/m2
+    bounds:
+    - rangeName: Underweight
+      lowerBound: 0
+      upperBound: 18.5
+    - rangeName: Normal Weight
+      lowerBound: 18.5
+      upperBound: 24.9
+    - rangeName: Overweight
+      lowerBound: 25
+      upperBound: 29.9
+    - rangeName: Obese Class I
+      lowerBound: 30
+      upperBound: 34.9
+    - rangeName: Obese Class II
+      lowerBound: 35
+      upperBound: 39.9
+    - rangeName: Obese Class III
+      lowerBound: 40
+      upperBound: 50

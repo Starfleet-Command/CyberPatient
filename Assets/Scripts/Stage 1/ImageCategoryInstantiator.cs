@@ -29,20 +29,56 @@ public class ImageCategoryInstantiator : MonoBehaviour
         GameObject buttonObjectInstance;
         Button _buttonInstance;
         Sprite categoryIconSprite;
+        ButtonCategoryHolder buttonDataScript;
 
         buttonObjectInstance = Instantiate(imageButtonPrefab);
         _buttonInstance = buttonObjectInstance.GetComponent<Button>();
+        buttonDataScript= buttonObjectInstance.GetComponent<ButtonCategoryHolder>();
+
         categoryIconSprite = Sprite.Create(category.categoryIcon, new Rect(0.0f, 0.0f, category.categoryIcon.width, category.categoryIcon.height), new Vector2(0.5f, 0.5f), 100.0f);
-        buttonObjectInstance.GetComponent<Image>().sprite = categoryIconSprite;
+        buttonDataScript.iconImage.sprite = categoryIconSprite;
 
         //The name of the gameObject is used to pass the filepath to the OnButtonPressed subscriber function, since it cannot be passed as an argument
         buttonObjectInstance.name=category.assetFolderPath;
 
         listOfButtons.Add(_buttonInstance);
 
+        buttonObjectInstance.GetComponent<ButtonCategoryHolder>().buttonImageCategory = category;
         buttonObjectInstance.transform.SetParent(uiCanvas.transform);
         _buttonInstance.onClick.AddListener(delegate {OnButtonPressed(_buttonInstance);});
 
+    }
+
+    public void InstantiateButtonMenuItem(SliderCategory category)
+    {
+        GameObject buttonObjectInstance;
+        Button _buttonInstance;
+        Sprite categoryIconSprite;
+        ButtonCategoryHolder buttonDataScript;
+
+        buttonObjectInstance = Instantiate(imageButtonPrefab);
+        _buttonInstance = buttonObjectInstance.GetComponent<Button>();
+        buttonDataScript= buttonObjectInstance.GetComponent<ButtonCategoryHolder>();
+
+
+        categoryIconSprite = Sprite.Create(category.categoryIcon, new Rect(0.0f, 0.0f, category.categoryIcon.width, category.categoryIcon.height), new Vector2(0.5f, 0.5f), 100.0f);
+        buttonDataScript.iconImage.sprite = categoryIconSprite;
+
+        listOfButtons.Add(_buttonInstance);
+
+        buttonObjectInstance.GetComponent<ButtonCategoryHolder>().buttonSliderCategory = category;
+        buttonObjectInstance.transform.SetParent(uiCanvas.transform);
+        _buttonInstance.onClick.AddListener(delegate {OnSliderButtonPressed(_buttonInstance);});
+
+    }
+
+    public void ResetButtonMenu()
+    {
+        foreach (Button _button in listOfButtons)
+        {
+            Destroy(_button.gameObject);
+        }
+        listOfButtons.Clear();
     }
 
     /// <summary>
@@ -53,23 +89,34 @@ public class ImageCategoryInstantiator : MonoBehaviour
     /// </param>
     public void OnButtonPressed(Button button)
     {   
-        if(activeButton!=null && activeButton!= button)
+        if(activeButton!= button)
         {
-            UnloadSecondaryImageMenu();
-        }
-        if(activeButton!=button)
-        {
+            ButtonCategoryHolder buttonDataScript = button.gameObject.GetComponent<ButtonCategoryHolder>();
+            UnloadSecondaryMenu();
+            button.gameObject.GetComponent<Image>().color = buttonDataScript.activeBackgroundColor;
+
             string _buttonNameIsFolderPath;
             _buttonNameIsFolderPath= button.gameObject.name;
-            ColorBlock buttonColorBlock = button.colors;
-            /* buttonColorBlock.normalColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-            button.colors = buttonColorBlock; */
-            CreateSecondaryImageMenu(_buttonNameIsFolderPath);  
+            CreateSecondaryImageMenu(_buttonNameIsFolderPath, button.GetComponent<RectTransform>().anchoredPosition);  
         }
         
         activeButton = button;
         
+    }
 
+
+    public void OnSliderButtonPressed(Button button)
+    {   
+        if(activeButton!= button)
+        {
+            ButtonCategoryHolder buttonDataScript = button.gameObject.GetComponent<ButtonCategoryHolder>();
+            UnloadSecondaryMenu();
+            button.gameObject.GetComponent<Image>().color = buttonDataScript.activeBackgroundColor;
+
+            dataController.GenerateSlider(buttonDataScript.buttonSliderCategory,buttonDataScript.buttonSliderCategory.isSpecialSlider);
+        }
+        
+        activeButton = button;
         
     }
 
@@ -80,14 +127,21 @@ public class ImageCategoryInstantiator : MonoBehaviour
     /// <param name="folderPath">
     /// the file path to the thumbnail folder for a specific category. 
     /// </param>
-    public void CreateSecondaryImageMenu(string folderPath)
+    public void CreateSecondaryImageMenu(string folderPath, Vector2 location)
     {
         Object[] secondaryMenuData;
         GameObject _menuRow=null;
         int numberOfIconsInRow = -1;
 
+
         //Dynamically load all textures in the folder, to prevent manual assignment and reassignment. 
         secondaryMenuData = Resources.LoadAll(folderPath, typeof(StageOneOptionObject));
+
+        //RectTransform menuLocation = secondaryMenuCanvas.GetComponent<RectTransform>();
+        //menuLocation.anchoredPosition = new Vector2(menuLocation.anchoredPosition.x,location.y);
+
+        //Turn on the background
+        secondaryMenuCanvas.GetComponent<Image>().enabled = true;
 
         foreach (StageOneOptionObject buttonData in secondaryMenuData)
         {
@@ -146,13 +200,18 @@ public class ImageCategoryInstantiator : MonoBehaviour
     /// <summary>
     /// This function works as a garbage collector for whenever the contents of the secondary menu change, usually due to button presses on the category menu. 
     /// </summary>
-    public void UnloadSecondaryImageMenu()
+    public void UnloadSecondaryMenu()
     {
          
         for (int i = 0; i < secondaryMenuCanvas.transform.childCount; i++)
         {
             Destroy(secondaryMenuCanvas.transform.GetChild(i).gameObject);
         }
+
+        if(activeButton!=null)
+            activeButton.gameObject.GetComponent<Image>().color = activeButton.GetComponent<ButtonCategoryHolder>().inactiveBackgroundColor;
+
+        secondaryMenuCanvas.GetComponent<Image>().enabled = false;
         Resources.UnloadUnusedAssets();
     }
 

@@ -13,7 +13,7 @@
     SerializedProperty associatedAttributeProp;
     SerializedProperty associatedTextureProp;
     SerializedProperty associatedColorProp;
-    SerializedProperty associatedMeshProp;
+    SerializedProperty meshOptionIndexProp;
     SerializedProperty newValueProp;
 
     void OnEnable()
@@ -25,7 +25,7 @@
         associatedAttributeProp  = serializedObject.FindProperty("associatedAttribute");
         associatedTextureProp  = serializedObject.FindProperty("associatedTexture");
         associatedColorProp  = serializedObject.FindProperty("associatedColor");
-        associatedMeshProp  = serializedObject.FindProperty("associatedMesh");
+        meshOptionIndexProp  = serializedObject.FindProperty("meshOptionIndex");
         newValueProp  = serializedObject.FindProperty("newValue");
     }
  
@@ -33,11 +33,16 @@
     {
         StageOneOptionObject script = (StageOneOptionObject)target;
 
+        //Property Fields automatically handle the type representation in the inspector. 
 
         EditorGUILayout.PropertyField(thumbnailProp, new GUIContent("Thumbnail"));
         EditorGUILayout.PropertyField(bodyPartIndexProp, new GUIContent("Body Part Index"));
         EditorGUILayout.PropertyField( buttonTypeProp,new GUIContent("Button Type") );
         serializedObject.ApplyModifiedProperties();
+
+
+        //The cascading conditionals are a little hardcoded but when working with enums it is complicated to make them both readable and expandable.
+        //Any changes to the enum require additional coding here to generate dynamic behaviour in the inspector.
 
         if (script.buttonType == StageOneOptionObject.Types.Texture_Color)
         {
@@ -53,7 +58,7 @@
         }
         else if(script.buttonType == StageOneOptionObject.Types.Mesh)
         {
-            EditorGUILayout.PropertyField(associatedMeshProp, new GUIContent("Mesh Option"));
+            EditorGUILayout.PropertyField(meshOptionIndexProp, new GUIContent("Mesh Option"));
         }
 
         else if(script.buttonType == StageOneOptionObject.Types.Texture_Attribute)

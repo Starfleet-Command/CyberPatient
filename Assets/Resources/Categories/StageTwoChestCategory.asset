@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c341e7df3be1a94fa9ed7c0b24e15eb, type: 3}
+  m_Name: StageTwoChestCategory
+  m_EditorClassIdentifier: 
+  title: Chest
+  subcategories:
+  - title: Anterior View
+    properties:
+    - name: Chest Shape
+      bodyPartName: chest_anterior
+      subproperties:
+      - title: Chest Deformity
+        type: 1
+        options:
+        - title: Normal
+          deformations:
+          - objectToDeform: 0
+            deformation: {x: 0, y: 0.3, z: 0}
+          - objectToDeform: 1
+            deformation: {x: 0, y: 0.5, z: 0}
+          shaderAttribute: 
+          hotspotName: 0
+          clip: {fileID: 0}
+        - title: Pectus Carinatum
+          deformations:
+          - objectToDeform: 0
+            deformation: {x: 0, y: 0.3, z: 0}
+          - objectToDeform: 1
+            deformation: {x: 0, y: 0.5, z: 0}
+          shaderAttribute: 
+          hotspotName: 0
+          clip: {fileID: 0}
+        - title: Pectus Excavatum
+          deformations:
+          - objectToDeform: 0
+            deformation: {x: 0, y: -0.3, z: 0}
+          - objectToDeform: 1
+            deformation: {x: 0, y: -0.5, z: 0}
+          shaderAttribute: 
+          hotspotName: 0
+          clip: {fileID: 0}
+      - title: Chest Sounds
+        type: 2
+        options:
+        - title: Sound 1
+          deformations: []
+          shaderAttribute: 
+          hotspotName: 1
+          clip: {fileID: 8300000, guid: e4f24fef76e3c184ba6417e085d2873f, type: 3}
+        - title: Sound 2
+          deformations: []
+          shaderAttribute: 
+          hotspotName: 2
+          clip: {fileID: 8300000, guid: c52ba52b936504a479bfc8fdb9018498, type: 3}
+        - title: Sound 3
+          deformations: []
+          shaderAttribute: 
+          hotspotName: 2
+          clip: {fileID: 8300000, guid: 96db22d64c976974985e55ad73e2d9e9, type: 3}

@@ -6,6 +6,7 @@ public class BodyPartRepository : MonoBehaviour
 {
     public List<BodyPart> bodyParts = new List<BodyPart>();
     public List<BodyPart> initialBodyParts = new List<BodyPart>();
+    public List<HeightBone> heightModificationBones = new List<HeightBone>();
     private StageOneStaticData levelData;
 
     //The following 2 functions add and remove a subscriber to the event that is fired when a new mesh is selected by the user.
@@ -36,20 +37,19 @@ public class BodyPartRepository : MonoBehaviour
         {
             if(_mesh.transform.parent.gameObject == part.bodyPartParent)
             {
-                Destroy(part.bodyPartMesh);
                 part.bodyPartMesh = _mesh;
-                part.bodyPartMaterial.Clear();
-
-                part.bodyPartMaterial= levelData.textureModifierScript.getAllSharedMaterialsFromObject(_mesh);
+                
                 
             }
  
         }
+
+        levelData.blendShapeScript.UpdateMeshRendererReference(_mesh);
         
     }
 
     /// <summary>
-    /// This function returns all body parts and textures to the state described by the initialBodyParts. Both lists should be equal at the start of execution, and both have to be filled manually.
+    /// This function returns all body parts and textures to the state described by the initialBodyParts. Both lists should be equal at the start of execution
     /// </summary>
     public void ResetTexturesAndMeshes()
     {
@@ -62,9 +62,21 @@ public class BodyPartRepository : MonoBehaviour
 
         for (int i = 0; i < initialBodyParts.Count; i++)
         {
-            levelData.avatarUpdateScript.UpdateMesh(i,initialBodyParts[i].bodyPartMesh);
+            
+            levelData.avatarUpdateScript.UpdateMesh(initialBodyParts[i].name,initialBodyParts[i].bodyPartMesh.transform.GetSiblingIndex());
             
         }
+    }
+
+    public void SetPartLists(List<BodyPart> initialList, List<HeightBone> heightBoneList)
+    {
+        for (int i = 0;i<initialList.Count;i++)
+        {
+            bodyParts.Add(new BodyPart(initialList[i]));
+            initialBodyParts.Add(new BodyPart(initialList[i]));
+        }
+
+        heightModificationBones = heightBoneList;
     }
 
     

@@ -7,64 +7,63 @@ public class BlendShapeHandler : MonoBehaviour
     //many 3d models when imported to unity will have different children objects. ObjectToBlend should be the one that has the SkinnedMeshRenderer component
     //but if there is no way of knowing, just put the parent 3d model.
     [SerializeField] private GameObject objectToBlend;
-    [SerializeField] private List<GameObject> bodyPartsWithBlendShapes;
+    [SerializeField] private List<BodyPartEnum> bodyPartsWithBlendShapes;
 
-    private SkinnedMeshRenderer meshRenderer;
+    public List<SkinnedMeshRenderer> meshRenderer;
     private Mesh skinnedMesh;
     private int noOfBlends;
     private List<float> blendShapeValues = new List<float>();
+    private StageOneStaticData levelData;
 
-
-    //The following 2 functions add and remove a subscriber to the event that is fired when a new mesh is selected by the user.
-     private void OnEnable()
-    {
-        StageOneEventManager.OnMeshChanged+=UpdateMeshRendererReference;
-    }
-
-    private void OnDisable()
-    {
-        StageOneEventManager.OnMeshChanged-=UpdateMeshRendererReference;
-    }
 
     // This is done in awake because variable in ModelDataController's start depend on these values. 
     void Awake()
     {
+        
+
         meshRenderer = getSkinnedMeshRenderer(objectToBlend);
-        if(meshRenderer != null)
+
+
+        foreach (SkinnedMeshRenderer _renderer in meshRenderer)
         {
-            skinnedMesh = meshRenderer.sharedMesh;
+            skinnedMesh = _renderer.sharedMesh;
             noOfBlends = skinnedMesh.blendShapeCount;
             for (int i = 0; i<noOfBlends; i++)
-        {
-            blendShapeValues.Add(meshRenderer.GetBlendShapeWeight(i) );
+            {
+                blendShapeValues.Add(_renderer.GetBlendShapeWeight(i) );
+            } 
         }
-        }
+            
+
+    }
+
+    void Start()
+    {
+        levelData = StageOneStaticData.Instance;
     }
 
     /// <summary>
-    /// This function tries to obtain a reference to a SkinnedMeshRenderer from a 3D model object. It first attempts to get it from the base object, but if it's not found it searches in its children
+    /// This function tries to obtain a reference to all SkinnedMeshRenderers in a 3D model object. It first attempts to get it from the base object, but if it's not found it searches in its children
     /// </summary>
     /// <param name="modelObject">
     /// The reference to the base GameObject containing the 3D model. This GameObject or its children should contain a SkinnedMeshRenderer component (found in all 3D models imported to unity) 
     /// </param>
-    private SkinnedMeshRenderer getSkinnedMeshRenderer(GameObject modelObject)
+    private List<SkinnedMeshRenderer> getSkinnedMeshRenderer(GameObject modelObject)
     {
-        if(modelObject.TryGetComponent<SkinnedMeshRenderer>(out meshRenderer))
-        {
-            return meshRenderer;
-        }
-
-        else
-        {
             Component[] backupSkinnedMesh;
+            List<SkinnedMeshRenderer> skinnedMeshList = new List<SkinnedMeshRenderer>();
             backupSkinnedMesh =  modelObject.GetComponentsInChildren(typeof(SkinnedMeshRenderer));
             if(backupSkinnedMesh.Length > 0)
             {
-                return (SkinnedMeshRenderer)backupSkinnedMesh[0];
+                foreach (SkinnedMeshRenderer _renderer in backupSkinnedMesh)
+                {
+                    skinnedMeshList.Add(_renderer);
+                }
+    
+                return skinnedMeshList;
             }
 
             return null;
-        }
     }
 
     /// <summary>
@@ -78,11 +77,15 @@ public class BlendShapeHandler : MonoBehaviour
     /// </param>
     public void ChangeBlendShape(int shapeIndex, float shapeValue)
     {
-        if(meshRenderer!= null && meshRenderer.sharedMesh.blendShapeCount>shapeIndex)
+        foreach (SkinnedMeshRenderer _renderer in meshRenderer)
         {
-            meshRenderer.SetBlendShapeWeight(shapeIndex,shapeValue); 
-            blendShapeValues[shapeIndex] = shapeValue;
+            if(_renderer.sharedMesh.blendShapeCount>shapeIndex)
+            {
+                _renderer.SetBlendShapeWeight(shapeIndex,shapeValue); 
+                blendShapeValues[shapeIndex] = shapeValue;
+            }
         }
+        
     }
 
 
@@ -120,9 +123,12 @@ public class BlendShapeHandler : MonoBehaviour
 
     public void UpdateMeshRendererReference(GameObject _mesh)
     {
-        if(bodyPartsWithBlendShapes.Contains(_mesh.transform.parent.gameObject))
+        BodyPart changedPart = BodyPart.GetPartByMesh(_mesh,levelData.bodyPartListScript.bodyParts);
+
+        
+        if(changedPart !=null && bodyPartsWithBlendShapes.Contains(changedPart.name))
         {
-            meshRenderer = getSkinnedMeshRenderer(_mesh);
+            meshRenderer = getSkinnedMeshRenderer(objectToBlend);
 
             for (int i = 0; i < blendShapeValues.Count; i++)
             {

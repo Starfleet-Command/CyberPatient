@@ -10,8 +10,6 @@ public class SliderInstantiator : MonoBehaviour
     private List<float> sliderDefaultValues = new List<float>();
     private List<SliderCategory> sliderInfo = new List<SliderCategory>();
 
-    [SerializeField] private float slope = 0.02f;
-    [SerializeField] private float b=-1.2f;
     [SerializeField] private GameObject sliderPrefab;
     [SerializeField] private GameObject UiSliderParent;
 
@@ -44,17 +42,23 @@ public class SliderInstantiator : MonoBehaviour
         _sliderInstance.minValue = category.minValue;
         _sliderInstance.value = category.defaultValue;
 
+        SliderLabelUpdater sliderLabelScript = _sliderInstance.transform.Find("LabelScript").GetComponent<SliderLabelUpdater>();
+        sliderLabelScript.slope = category.equationSlope;
+        sliderLabelScript.intercept = category.equationIntercept;
+
         sliderDefaultValues.Add(category.defaultValue);
         sliderInfo.Add(category);
         
         if(!isSpecialSlider)
         {
+            sliderLabelScript.heightOrWeightSlider = -1;
             _sliderInstance.onValueChanged.AddListener(delegate {ChangedSliderValue(_sliderInstance);});
             InitSingleSliderValue(listOfSliders.Count-levelData.specialSliderCount);
         }
 
         else
         {
+            sliderLabelScript.heightOrWeightSlider = 1;
             _sliderInstance.onValueChanged.AddListener(delegate {ChangedHeightSliderValue(_sliderInstance);});
             ChangedHeightSliderValue(_sliderInstance);
         }
@@ -110,9 +114,13 @@ public class SliderInstantiator : MonoBehaviour
     /// </param>
     public void ChangedSliderValue(Slider slider)
     {   
-        int _sliderIndex;
-        _sliderIndex= slider.transform.GetSiblingIndex();
-        levelData.dataControllerScript.BlendShapeChangeOnSlider(_sliderIndex, slider.value);
+        if(slider!= null)
+        {
+            int _sliderIndex;
+            _sliderIndex= slider.transform.GetSiblingIndex();
+            levelData.dataControllerScript.BlendShapeChangeOnSlider(_sliderIndex, slider.value);
+        }
+        
     }
 
     /// <summary>
@@ -123,25 +131,10 @@ public class SliderInstantiator : MonoBehaviour
     /// </param>
     public void ChangedHeightSliderValue(Slider slider)
     {
-        float newValue = ConvertHeightToScale(slider.value);
-        levelData.dataControllerScript.ChangeModelHeight(newValue);
+        float percentageChange = slider.value/slider.maxValue;
+        
 
+        levelData.avatarUpdateScript.ChangeModelHeight(percentageChange);
     }
 
-    /// <summary>
-    //This calculation translates the value from the height scale of 130cm-210cm to the actual scale value the object will use (1.6-3)
-    /// </summary>
-    /// <param name="heightValue">
-    /// The new value of the slider, that corresponds to the height of the avatar.
-    /// </param>
-    /// <returns >
-    /// The height converted to an appropriate value for Unity to use as its scale. 
-    /// </returns>
-    private float ConvertHeightToScale(float heightValue)
-    {
-        float newNormalizedValue = 0f;
-        newNormalizedValue = (slope*heightValue)+b;
-
-        return newNormalizedValue;
-    }
 }
