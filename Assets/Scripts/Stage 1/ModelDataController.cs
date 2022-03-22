@@ -40,6 +40,7 @@ public class ModelDataController : MonoBehaviour
         SliderCategory[] slidersToGenerate = primaryButtonData.sliderCategories;
 
         levelData.imageInstantiatorScript.ResetButtonMenu();
+        levelData.imageInstantiatorScript.UnloadSecondaryMenu();
 
         //If the buttons to generate are image categories only
         if(iconsToGenerate.Length >= (amountToGenerate*pageIndex))

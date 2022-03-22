@@ -592,7 +592,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: SUBSTANCE_PLUGIN_ENABLED;FBXSDK_RUNTIME
-    13: FBXSDK_RUNTIME
+    13: 
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

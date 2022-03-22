@@ -33,11 +33,3 @@ public class StageOneOptionObject : ScriptableObject
   
 }
 
-//New body parts should be added here
-public enum BodyPartEnum
-{
-  Hair,
-  Head,
-  Clothes,
-  Body,
-}

@@ -416,7 +416,7 @@ MonoBehaviour:
   categoryUnit: {fileID: 8499215739747150045}
   boundValue: {fileID: 8499215739326044144}
   textBox: {fileID: 8499215740697047350}
-  textBoxDefaultValue: {fileID: 0}
+  textBoxDefaultValue: {fileID: 8499215739222131182}
   categoryObject:
     categoryName: 
     unitOfMeasurement: 

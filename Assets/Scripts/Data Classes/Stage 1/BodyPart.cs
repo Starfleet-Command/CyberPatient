@@ -58,3 +58,13 @@ public class BodyPart
     }
     
 }
+
+//New body parts should be added here
+public enum BodyPartEnum
+{
+  Hair,
+  Head,
+  Clothes,
+  Body,
+  Hotspots,
+}

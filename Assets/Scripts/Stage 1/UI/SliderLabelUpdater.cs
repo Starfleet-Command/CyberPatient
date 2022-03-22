@@ -26,13 +26,15 @@ public class SliderLabelUpdater : MonoBehaviour
 
         if(heightOrWeightSlider==-1)
         {
-            levelData.avatarInfo.weight = newLabelValue;
+            levelData.avatarInfo.phaseInfo["Weight"] = newLabelValue;
         }
 
         else if(heightOrWeightSlider==1)
         {
-            levelData.avatarInfo.height = newLabelValue;
+            levelData.avatarInfo.phaseInfo["Height"] = newLabelValue;
         }
+
+        levelData.avatarInfo.phaseInfo["BMI"] = ((levelData.avatarInfo.phaseInfo["Weight"]/levelData.avatarInfo.phaseInfo["Height"])/levelData.avatarInfo.phaseInfo["Height"])*10000;
 	}
 
 }

@@ -11,6 +11,7 @@ public class LoadUIFromCategory : MonoBehaviour
     [SerializeField] private GameObject tabButtonPrefab;
     [SerializeField] private GameObject vitalSignsParentObject;
     [SerializeField] private GameObject vitalCategoryPrefab;
+    private AvatarPhaseTwoInfo carryoverModelData;
     private StageTwoStaticData levelData;
     private Font arial;
     private int currentTab = 0;
@@ -19,6 +20,8 @@ public class LoadUIFromCategory : MonoBehaviour
     void Start()
     {
         levelData = StageTwoStaticData.Instance;
+        carryoverModelData = GameObject.FindWithTag("Player").GetComponent<AvatarPhaseTwoInfo>();
+        carryoverModelData.PrintCharacterInfo();
         arial = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
 
     /* foreach (StageTwoCategoryObject cat in levelData.listOfCategories)
@@ -78,18 +81,25 @@ public class LoadUIFromCategory : MonoBehaviour
         {
             GameObject categoryInstance = Instantiate(vitalCategoryPrefab);
             categoryInstance.transform.SetParent(vitalSignsParentObject.transform);
-            InitialCategorySetup(categoryInstance,signsData.Categories[i],true);
+            InitialCategorySetup(categoryInstance,signsData.Categories[i]);
         }
 
-        for (int i = 0; i < signsData.nonEditableCategories.Count; i++)
+        Dictionary<string,float> carryoverVariables = carryoverModelData.phaseInfo;
+
+        if(carryoverVariables.Count == signsData.nonEditableCategories.Count)
         {
-            GameObject categoryInstance = Instantiate(vitalCategoryPrefab);
-            categoryInstance.transform.SetParent(vitalSignsParentObject.transform);
-            InitialCategorySetup(categoryInstance,signsData.nonEditableCategories[i],false);
+            for (int i = 0; i < signsData.nonEditableCategories.Count; i++)
+            {
+                GameObject categoryInstance = Instantiate(vitalCategoryPrefab);
+                categoryInstance.transform.SetParent(vitalSignsParentObject.transform);
+                NonEditableCategorySetup(categoryInstance,signsData.nonEditableCategories[i],carryoverVariables[signsData.nonEditableCategories[i].categoryName]);
+            }
         }
+        
+        
     }
 
-    private void InitialCategorySetup(GameObject categoryInstance,VitalSignCategory currentCategory, bool isInteractive)
+    private void InitialCategorySetup(GameObject categoryInstance,VitalSignCategory currentCategory)
     {
         CategoryTextReferences textReferences = categoryInstance.GetComponent<CategoryTextReferences>();
         textReferences.categoryName.text = currentCategory.categoryName;
@@ -100,11 +110,18 @@ public class LoadUIFromCategory : MonoBehaviour
         {
             textReferences.textBoxDefaultValue.text = currentCategory.defaultValue.ToString();
         }
+    }
 
-        if(!isInteractive)
-        {
-            textReferences.textBox.DeactivateInputField();
-        }
+    private void NonEditableCategorySetup(GameObject categoryInstance,VitalSignCategory currentCategory,float carryoverAttribute)
+    {
+        CategoryTextReferences textReferences = categoryInstance.GetComponent<CategoryTextReferences>();
+        textReferences.categoryName.text = currentCategory.categoryName;
+        textReferences.categoryUnit.text = currentCategory.unitOfMeasurement;
+        textReferences.categoryObject = currentCategory;
+
+        textReferences.textBoxDefaultValue.text = carryoverAttribute.ToString();
+        textReferences.textBox.interactable=false;
+        
     }
 
     public void GenerateCategory(StageTwoCategoryObject categories)

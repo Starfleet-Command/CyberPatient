@@ -4,16 +4,46 @@ using UnityEngine;
 
 public class AvatarPhaseTwoInfo : MonoBehaviour
 {
-    public float height;
-    public float weight;
-
+    public float bmi;
+    public Dictionary<string, float> phaseInfo = new Dictionary<string, float>();
+    public Dictionary<string, string> characterSelectInfo= new Dictionary<string, string>();
     [SerializeField] private float startingHeight;
     [SerializeField] private float startingWeight;
 
     private void Start()
     {
-        height = startingHeight;
-        weight = startingWeight;
+        bmi = ((startingWeight/startingHeight)/startingHeight)*10000; //Assuming that weight is in kg and height is in cm.  
+
+        phaseInfo.Add("Weight",startingWeight);
+        phaseInfo.Add("Height",startingHeight);
+        phaseInfo.Add("BMI",bmi);
+
+        InitModelDictionary();
+    }
+
+    public void InitModelDictionary()
+    {
+        foreach (string name in BodyPartEnum.GetNames(typeof(BodyPartEnum)))
+        {
+            characterSelectInfo.Add(name,"none");
+            characterSelectInfo.Add(name+"_Color","none");
+        }
+
+    }
+
+    public void ModifyCharacterInfo(string key, string value)
+    {
+        if(characterSelectInfo.ContainsKey(key))
+            characterSelectInfo[key] = value;
+    }
+
+    public void PrintCharacterInfo()
+    {
+        foreach (KeyValuePair<string, string> category in characterSelectInfo)
+        {
+            Debug.Log(""+category.Key + ": "+category.Value);
+        }
+
     }
 
 }

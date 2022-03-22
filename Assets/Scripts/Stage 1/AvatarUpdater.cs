@@ -56,10 +56,12 @@ public class AvatarUpdater : MonoBehaviour
 
         if(indexOfMaterial!=-1)
         {
+            levelData.avatarInfo.ModifyCharacterInfo(partName.ToString()+"_Color",newColor.ToString());
+            levelData.avatarInfo.PrintCharacterInfo();
             UpdateTextureColor(attributeName,bodyPart.bodyPartMesh,indexOfMaterial, newColor);
         }
 
-        // The calls the function again for all the materials that need to change when that body part changes. 
+        // The calls the function again for all the identical materials that need to change when that body part changes. 
         if(!isRecursiveCall)
         {
             for (int i = 0; i < bodyPart.textureLinkedBodyParts.Count; i++)

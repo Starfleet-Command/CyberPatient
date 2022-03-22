@@ -38,13 +38,14 @@ public class BodyPartRepository : MonoBehaviour
             if(_mesh.transform.parent.gameObject == part.bodyPartParent)
             {
                 part.bodyPartMesh = _mesh;
-                
-                
+                levelData.avatarInfo.ModifyCharacterInfo(part.ToString(),_mesh.name);
+                levelData.avatarInfo.PrintCharacterInfo();
             }
  
         }
 
         levelData.blendShapeScript.UpdateMeshRendererReference(_mesh);
+
         
     }
 
@@ -70,13 +71,35 @@ public class BodyPartRepository : MonoBehaviour
 
     public void SetPartLists(List<BodyPart> initialList, List<HeightBone> heightBoneList)
     {
+        
+
         for (int i = 0;i<initialList.Count;i++)
         {
             bodyParts.Add(new BodyPart(initialList[i]));
             initialBodyParts.Add(new BodyPart(initialList[i]));
+
         }
 
         heightModificationBones = heightBoneList;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (BodyPart item in bodyParts)
+        {
+            levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString(),item.bodyPartMesh.name);
+            if(item.bodyPartMaterial[0].HasProperty("_Color"))
+            {
+                levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].color.ToString());
+            }
+            else
+            {
+                levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].GetColor("_MainColor").ToString());
+            }
+            
+        }
+
+            levelData.avatarInfo.PrintCharacterInfo();
     }
 
     
