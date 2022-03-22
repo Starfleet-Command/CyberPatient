@@ -17,7 +17,6 @@ public class StageOneOptionObject : ScriptableObject
       Texture_Attribute,
       Texture_New,
       Mesh,
-
   }
 
   public Types buttonType;

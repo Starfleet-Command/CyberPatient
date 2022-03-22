@@ -5,11 +5,13 @@ using UnityEngine.UI;
 public class SetBoundTextOnEditEnd : MonoBehaviour
 {
     private CategoryTextReferences buttonReferences;
+    private AvatarPhaseTwoInfo avatarInfoScript;
 
     private void Start()
     {
         buttonReferences = this.gameObject.GetComponent<CategoryTextReferences>();
         buttonReferences.textBox.onEndEdit.AddListener(OnEditEnd);
+        avatarInfoScript = GameObject.FindWithTag("Player").GetComponent<AvatarPhaseTwoInfo>();
     }
 
     public void OnEditEnd(string editedText)
@@ -29,7 +31,9 @@ public class SetBoundTextOnEditEnd : MonoBehaviour
                     break;
                 }
             }
+            
 
+            avatarInfoScript.ModifyCharacterInfo(buttonReferences.categoryObject.categoryName,enteredValue.ToString() +" ["+buttonReferences.categoryObject.unitOfMeasurement+"]");
             
         }
     }

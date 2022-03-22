@@ -25,10 +25,10 @@ MonoBehaviour:
     categoryIcon: {fileID: 2800000, guid: 2f789c9e9a6f48e4491233bdbecfc077, type: 3}
     assetFolderPath: SkinColor
     tooltip: Skin Colour
-  - categoryName: Head
-    categoryIcon: {fileID: 2800000, guid: 63bc4d899aed40a4eb0792fb9ad6997b, type: 3}
-    assetFolderPath: Head
-    tooltip: Head Type
+  - categoryName: HairColor
+    categoryIcon: {fileID: 2800000, guid: cb837a1bc23731c4b84980517d547921, type: 3}
+    assetFolderPath: HairColor
+    tooltip: Hair Color
   sliderCategories:
   - categoryName: Weight
     categoryIcon: {fileID: 2800000, guid: c003c86fc85338744be99bad6bf116fb, type: 3}

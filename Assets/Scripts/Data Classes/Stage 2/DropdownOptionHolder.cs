@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DropdownOptionHolder : MonoBehaviour
 {
+    public string subpropertyName;
     public List<Option> currentDropdownOptions;
     public PropertyTypes dropdownType;
 }

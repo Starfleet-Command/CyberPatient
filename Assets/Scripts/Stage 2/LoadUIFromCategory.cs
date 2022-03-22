@@ -13,23 +13,23 @@ public class LoadUIFromCategory : MonoBehaviour
     [SerializeField] private GameObject vitalCategoryPrefab;
     private AvatarPhaseTwoInfo carryoverModelData;
     private StageTwoStaticData levelData;
-    private Font arial;
-    private int currentTab = 0;
+    private Font uiFont;
+    private int currentTab = -1;
+    private List<bool> hasTabBeenGeneratedBefore = new List<bool>();
 
     // Start is called before the first frame update
     void Start()
     {
         levelData = StageTwoStaticData.Instance;
         carryoverModelData = GameObject.FindWithTag("Player").GetComponent<AvatarPhaseTwoInfo>();
-        carryoverModelData.PrintCharacterInfo();
-        arial = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+        uiFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
 
     /* foreach (StageTwoCategoryObject cat in levelData.listOfCategories)
     {
         GenerateCategory(cat);
     } */
         CreateTabs();
-        GenerateVitalSignsUI(levelData.vitalSignData);
+        SwitchTab(0);
     }
 
     // Update is called once per frame
@@ -45,28 +45,53 @@ public class LoadUIFromCategory : MonoBehaviour
             GameObject tabInstance = Instantiate(tabButtonPrefab);
             tabInstance.transform.SetParent(tabButtonParentObject.transform);
             Button instanceButton = tabInstance.GetComponent<Button>();
+
+            hasTabBeenGeneratedBefore.Add(false);
             instanceButton.onClick.AddListener(delegate {SwitchTab(tabInstance.transform.GetSiblingIndex());});
         }
     }
 
-    public void SwitchTab(int newTab)
+    public void SwitchTab(int tabIndex)
     {
-        if(newTab <= levelData.listOfCategories.Length && newTab!=currentTab)
+        if(tabIndex <= levelData.listOfCategories.Length && tabIndex!=currentTab)
         {
-            ClearAllChildren(uiParentObject);
-            ClearAllChildren(vitalSignsParentObject);
-
-            if(newTab == 0)
+            if(!hasTabBeenGeneratedBefore[tabIndex])
             {
-                GenerateVitalSignsUI(levelData.vitalSignData);
+                HideAllChildren(uiParentObject);
+
+                if(tabIndex == 0)
+                {
+                    GenerateVitalSignsUI(levelData.vitalSignData);
+                }
+                else
+                {
+                    vitalSignsParentObject.transform.parent.gameObject.SetActive(false);
+                    GenerateCategory(levelData.listOfCategories[tabIndex-1]);
+                }
+
+                hasTabBeenGeneratedBefore[tabIndex] = true;
             }
+
             else
             {
-                vitalSignsParentObject.transform.parent.gameObject.SetActive(false);
-                GenerateCategory(levelData.listOfCategories[newTab-1]);
+                HideAllChildren(uiParentObject);
+
+                if(tabIndex ==0)
+                {
+                   vitalSignsParentObject.transform.parent.gameObject.SetActive(true);
+                }
+
+                else
+                {
+                    vitalSignsParentObject.transform.parent.gameObject.SetActive(false);
+                    UnhideChildAtIndex(uiParentObject,tabIndex-1);
+                }
+
+
             }
 
-            currentTab = newTab;
+            currentTab = tabIndex;
+            
         }
         
     }
@@ -108,7 +133,19 @@ public class LoadUIFromCategory : MonoBehaviour
 
         if(currentCategory.defaultValue> 0)
         {
+            if(!carryoverModelData.characterSelectInfo.ContainsKey(currentCategory.categoryName))
+            {
+                carryoverModelData.characterSelectInfo.Add(currentCategory.categoryName,currentCategory.defaultValue.ToString()+" ["+currentCategory.unitOfMeasurement+"]");
+            }
+
             textReferences.textBoxDefaultValue.text = currentCategory.defaultValue.ToString();
+        }
+        else
+        {
+            if(!carryoverModelData.characterSelectInfo.ContainsKey(currentCategory.categoryName))
+            {
+                carryoverModelData.characterSelectInfo.Add(currentCategory.categoryName,"0 "+" ["+currentCategory.unitOfMeasurement+"]");
+            }
         }
     }
 
@@ -173,11 +210,16 @@ public class LoadUIFromCategory : MonoBehaviour
 
         Text subpropertyText = InitTextElement(subpropertyObject,16, _subproperty.title);
         SetTextPosition(subpropertyText,new Vector3(0,-100,0), new Vector2(90,90));
+        
+        if(!carryoverModelData.characterSelectInfo.ContainsKey(_subproperty.title))
+        {
+            carryoverModelData.characterSelectInfo.Add(_subproperty.title,"normal");
+        }
 
-        BuildDropdown(_subproperty.options, subpropertyObject,_subproperty.type);
+        BuildDropdown(_subproperty.title,_subproperty.options, subpropertyObject,_subproperty.type);
     }
 
-    private void BuildDropdown(Option[] dropdownOptions, GameObject subpropertyParent, PropertyTypes subpropertyType)
+    private void BuildDropdown(string _subpropertyName,Option[] dropdownOptions, GameObject subpropertyParent, PropertyTypes subpropertyType)
     {
         List<string> items = new List<string>();
         GameObject dropdownObject = Instantiate(dropdownPrefab);
@@ -189,6 +231,8 @@ public class LoadUIFromCategory : MonoBehaviour
 
         optionHolderScript.currentDropdownOptions.Clear();
         optionHolderScript.dropdownType = subpropertyType;
+        optionHolderScript.subpropertyName = _subpropertyName;
+
         foreach (Option _option in dropdownOptions)
         {
             items.Add(_option.title);
@@ -209,13 +253,16 @@ public class LoadUIFromCategory : MonoBehaviour
         Option chosenOption = Option.FindByTitle(_dropdown.captionText.text,optionHolderScript.currentDropdownOptions);
         levelData.avatarEffectsOnOptionSelectScript.WhenDropdownOptionSelected(chosenOption, optionHolderScript.dropdownType);
 
+        carryoverModelData.ModifyCharacterInfo(optionHolderScript.subpropertyName,chosenOption.title);
+            
+
     }
 
         private Text InitTextElement(GameObject parent, int fontSize, string text)
     {
         Text propertyText = parent.AddComponent<Text>();
         propertyText.text = text;
-        propertyText.font = arial;
+        propertyText.font = uiFont;
         propertyText.color = Color.black;
         propertyText.fontSize = fontSize;
         propertyText.alignment = TextAnchor.MiddleLeft;
@@ -244,6 +291,35 @@ public class LoadUIFromCategory : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+    }
+
+    private void HideAllChildren(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    private void UnhideChildAtIndex(GameObject parent, int index)
+    {
+        if(parent.transform.childCount>index)
+        {
+            parent.transform.GetChild(index).gameObject.SetActive(true);
+        }
+
+        else
+        {
+            Debug.LogWarning("Attempting to show a tab that doesn't exist");
+        }
+    }
+
+    private void UnhideAllChildren(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
     }
 
 

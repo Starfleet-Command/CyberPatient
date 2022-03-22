@@ -39,7 +39,6 @@ public class BodyPartRepository : MonoBehaviour
             {
                 part.bodyPartMesh = _mesh;
                 levelData.avatarInfo.ModifyCharacterInfo(part.ToString(),_mesh.name);
-                levelData.avatarInfo.PrintCharacterInfo();
             }
  
         }
@@ -88,18 +87,22 @@ public class BodyPartRepository : MonoBehaviour
         foreach (BodyPart item in bodyParts)
         {
             levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString(),item.bodyPartMesh.name);
-            if(item.bodyPartMaterial[0].HasProperty("_Color"))
+            
+            if(item.bodyPartMaterial.Count>0)
             {
-                levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].color.ToString());
+                if(item.bodyPartMaterial[0].HasProperty("_Color"))
+                {
+                    levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].color.ToString());
+                }
+                else
+                {
+                    levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].GetColor("_MainColor").ToString());
+                }
             }
-            else
-            {
-                levelData.avatarInfo.ModifyCharacterInfo(item.name.ToString()+"_Color",item.bodyPartMaterial[0].GetColor("_MainColor").ToString());
-            }
+            
             
         }
 
-            levelData.avatarInfo.PrintCharacterInfo();
     }
 
     

@@ -41,32 +41,26 @@ public class AvatarUpdater : MonoBehaviour
         {
             UpdateMesh(buttonData.bodyPartIndex,buttonData.meshOptionIndex);
         }
-        else if(buttonData.buttonType.ToString()=="Texture_Color" && buttonData.associatedTexture!= null)
+        else if(buttonData.buttonType.ToString()=="Texture_Color")
         {
-            UpdateTextureWrapper(buttonData.bodyPartIndex,buttonData.associatedTexture,buttonData.associatedAttribute,buttonData.associatedColor,false);
+            UpdateTextureWrapper(buttonData.bodyPartIndex,buttonData.associatedAttribute,buttonData.associatedColor,false);
         }
     }
 
 
-    private void UpdateTextureWrapper(BodyPartEnum partName, Material materialMatch, string attributeName, Color newColor, bool isRecursiveCall)
+    private void UpdateTextureWrapper(BodyPartEnum partName, string attributeName, Color newColor, bool isRecursiveCall)
     {
         BodyPart bodyPart = BodyPart.GetPartByName(partName,levelData.bodyPartListScript.bodyParts);
 
-        int indexOfMaterial = FindMaterialMatchInList(bodyPart.bodyPartMaterial,materialMatch);
-
-        if(indexOfMaterial!=-1)
-        {
-            levelData.avatarInfo.ModifyCharacterInfo(partName.ToString()+"_Color",newColor.ToString());
-            levelData.avatarInfo.PrintCharacterInfo();
-            UpdateTextureColor(attributeName,bodyPart.bodyPartMesh,indexOfMaterial, newColor);
-        }
+        levelData.avatarInfo.ModifyCharacterInfo(partName.ToString()+"_Color",newColor.ToString());
+        UpdateTextureColor(attributeName,bodyPart.bodyPartMesh, newColor);
 
         // The calls the function again for all the identical materials that need to change when that body part changes. 
         if(!isRecursiveCall)
         {
             for (int i = 0; i < bodyPart.textureLinkedBodyParts.Count; i++)
             {
-                UpdateTextureWrapper(bodyPart.textureLinkedBodyParts[i],materialMatch,attributeName,newColor,true);   
+                UpdateTextureWrapper(bodyPart.textureLinkedBodyParts[i],attributeName,newColor,true);   
             }
         }
 
@@ -102,16 +96,16 @@ public class AvatarUpdater : MonoBehaviour
     /// <param name="newColor">
     /// The new color that the attribute will change to.
     /// </param>
-    public void UpdateTextureColor(string _attributeName, GameObject texturedObject, int indexOfMaterial, Color newColor)
+    public void UpdateTextureColor(string _attributeName, GameObject texturedObject, Color newColor)
     {
         //If no attribute was specified, use the value of colorAttributeName as the fallback attribute
         if(string.IsNullOrEmpty(_attributeName) && !string.IsNullOrEmpty(colorAttributeName))
         {
-            textureSwapScript.UpdateTexture(colorAttributeName,texturedObject,indexOfMaterial,newColor);
+            textureSwapScript.UpdateTexture(colorAttributeName,texturedObject,newColor);
         }
         else
         {
-            textureSwapScript.UpdateTexture(_attributeName,texturedObject,indexOfMaterial,newColor);
+            textureSwapScript.UpdateTexture(_attributeName,texturedObject,newColor);
         }
     }
 

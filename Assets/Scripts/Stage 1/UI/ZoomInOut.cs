@@ -8,8 +8,24 @@ public class ZoomInOut : MonoBehaviour
     public int lowerBound;
     public int upperBound;
     public float sensitivity = 0.3f;
+    public float panSpeed = 0.1f;
+    public float upperHeightBound;
 
+    public float lowerHeightBound;
+
+    #if UNITY_EDITOR
+    [ReadOnly] public Vector3 initialCameraPosition;
+    [ReadOnly] public float initialFov;
+
+    #endif
+
+    #if !UNITY_EDITOR
+    public Vector3 initialCameraPosition;
+    public float initialFov;
+    
+    #endif
     private float scrollDirection;
+    private float panDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +34,9 @@ public class ZoomInOut : MonoBehaviour
         {
             cameraReference = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         }
+
+        initialCameraPosition = cameraReference.transform.position;
+        initialFov = cameraReference.fieldOfView;
     }
 
     // Update is called once per frame
@@ -26,6 +45,12 @@ public class ZoomInOut : MonoBehaviour
         scrollDirection= -Input.mouseScrollDelta.y;
         if(scrollDirection!=0)
             ZoomCamera(scrollDirection);
+
+        panDirection = Input.GetAxis("Vertical");
+        if(panDirection!=0)
+        {
+            MoveCameraVertical(panDirection);
+        }
     }
     /// <summary>
     /// This method is used by the UI buttons for discretized zooming using the field of view. The minimum and maximum zoom are dictated by lowerBound and upperBound respectively.
@@ -55,5 +80,33 @@ public class ZoomInOut : MonoBehaviour
         cameraReference.fieldOfView = _fov;
 
         
+    }
+
+    private void MoveCameraVertical(float yVal)
+    {
+        float yPos = this.gameObject.transform.position.y;
+        if(yPos <= upperHeightBound && yPos >= lowerHeightBound)
+        {
+            Vector3 movementAmount = new Vector3(0, yVal, 0) * panSpeed;
+
+            if(yPos+ movementAmount.y >= upperHeightBound)
+            {
+                movementAmount.y = upperHeightBound-yPos;
+            }
+            else if(yPos+ movementAmount.y <= lowerHeightBound)
+            {
+                movementAmount.y = lowerHeightBound - yPos;
+            }
+
+            transform.Translate(movementAmount);
+        }
+        
+        
+    }
+
+    public void ResetCamera()
+    {
+        cameraReference.transform.position= initialCameraPosition;
+        cameraReference.fieldOfView= initialFov;
     }
 }

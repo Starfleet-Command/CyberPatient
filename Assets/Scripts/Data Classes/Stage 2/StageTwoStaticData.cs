@@ -12,16 +12,22 @@ public class StageTwoStaticData : MonoBehaviour
     public StageTwoAvatarFunctions avatarFunctionsScript;
     public ChangeOnOptionSelect avatarEffectsOnOptionSelectScript;
     public VitalSignsConfigurationObject vitalSignData;
+    public TransparentizeModelMeshes transparentToggleScript;
     public StageTwoCategoryObject[] listOfCategories;
-    
 }
 
 public enum HotspotTypes
 {
     None,
-    LeftLung,
-    RightLung,
+    LeftUpperLung,
+    RightUpperLung,
+    LeftLowerLung,
+    RightLowerLung,
+    RightMiddleLung,
     Aortic,
+    Tricuspid,
+    Pulmonic,
+    ErbPoint,
     Mitral,
     Liver,
     Bowel,
@@ -33,4 +39,34 @@ public enum PropertyTypes
     Deformation,
     Audio,
     AnimatedTexture,
+}
+
+public enum EditableBoneOptions
+{
+RightLowerArm_A,
+RightLowerArm_B,
+RightUpperArm_A,
+RightUpperArm_B,
+LeftLowerArm_A,
+LeftLowerArm_B,
+LeftUpperArm_A,
+LeftUpperArm_B,
+FrontRightBreast,
+FrontLeftBreast,
+BackRightBreast,
+BackLeftBreast,
+RightTorso,
+LeftTorso,
+RightBack,
+LeftBack,
+RightGlute,
+LeftGlute,
+LowerLeftLeg_A,
+LowerLeftLeg_B,
+UpperLeftLeg_A,
+UpperLeftLeg_B,
+LowerRightLeg_A,
+LowerRightLeg_B,
+UpperRightLeg_A,
+UpperRightLeg_B,
 }

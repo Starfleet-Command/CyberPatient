@@ -42,11 +42,17 @@ public class TextureModifier : MonoBehaviour
     /// <param name="newColor">
     /// The new color that the attribute will change to.
     /// </param>
-    public void UpdateTexture(string _attributeName, GameObject texturedObject, int indexOfMaterial, Color newColor)
+    public void UpdateTexture(string _attributeName, GameObject texturedObject, Color newColor)
     {
         List<Material> uniqueMaterialsInObject = MaterialUtilities.getAllMaterialsFromObject(texturedObject);
 
-        uniqueMaterialsInObject[indexOfMaterial].SetColor(_attributeName,newColor);
+        foreach (Material uniqueMaterial in uniqueMaterialsInObject)
+        {
+            if(uniqueMaterial.HasProperty(_attributeName))
+            {
+                uniqueMaterial.SetColor(_attributeName,newColor);
+            }
+        }
         
 
     }

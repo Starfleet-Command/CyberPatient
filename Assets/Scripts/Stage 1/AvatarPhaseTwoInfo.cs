@@ -46,5 +46,22 @@ public class AvatarPhaseTwoInfo : MonoBehaviour
 
     }
 
+    public string PrepDataForExport()
+    {
+        string returnString="";
+
+        foreach (KeyValuePair<string, string> category in characterSelectInfo)
+        {
+            returnString += ""+category.Key+": "+category.Value+"\n\n";
+        }
+
+        foreach (KeyValuePair<string, float> category in phaseInfo)
+        {
+            returnString += ""+category.Key+": "+category.Value.ToString()+"\n\n";
+        }
+
+        return returnString;
+    }
+
 }
     //Fill with the remaining info you want to pass to phase two. 

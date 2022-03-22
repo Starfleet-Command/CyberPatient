@@ -10,6 +10,7 @@ public class BodyPart
     public List<Material> bodyPartMaterial;
     public GameObject bodyPartMesh;
     public List<BodyPartEnum> textureLinkedBodyParts;
+    public List<GameObject> additionalPartMeshes;
 
     public BodyPart(BodyPartEnum _name, GameObject _bodyPartParent, List<Material> _bodyPartMaterial, GameObject _bodyPartMesh)
     {
@@ -18,6 +19,18 @@ public class BodyPart
         bodyPartMaterial  = _bodyPartMaterial;
         bodyPartMesh = _bodyPartMesh;
         textureLinkedBodyParts = new List<BodyPartEnum>();
+        additionalPartMeshes = new List<GameObject>();
+    }
+
+    public BodyPart(BodyPartEnum _name, GameObject _bodyPartParent, List<Material> _bodyPartMaterial, GameObject _bodyPartMesh, List<GameObject> _additionalMeshes)
+    {
+        name = _name;
+        bodyPartParent = _bodyPartParent;
+        bodyPartMaterial  = _bodyPartMaterial;
+        bodyPartMesh = _bodyPartMesh;
+        additionalPartMeshes = _additionalMeshes;
+        textureLinkedBodyParts = new List<BodyPartEnum>();
+        
     }
 
     public BodyPart(BodyPart existingPart)
@@ -27,6 +40,7 @@ public class BodyPart
         bodyPartMaterial  = existingPart.bodyPartMaterial;
         bodyPartMesh = existingPart.bodyPartMesh;
         textureLinkedBodyParts = existingPart.textureLinkedBodyParts;
+        additionalPartMeshes = existingPart.additionalPartMeshes;
     }
 
     public static BodyPart GetPartByName(BodyPartEnum name, List<BodyPart> partList)
@@ -51,6 +65,14 @@ public class BodyPart
             {
                 
                 return part;
+            }
+
+            foreach (GameObject extraMesh in part.additionalPartMeshes)
+            {
+                if(extraMesh.name == mesh.name)
+                {
+                    return part;
+                }
             }   
         }
 
@@ -59,12 +81,17 @@ public class BodyPart
     
 }
 
-//New body parts should be added here
+
+//New single mesh body parts should be added here
 public enum BodyPartEnum
 {
-  Hair,
-  Head,
-  Clothes,
-  Body,
-  Hotspots,
+    Hair,
+    Head,
+    Clothes,
+    Body,
+    Hotspots,
+    Eyebrows,
+    Eyes,
+    Mouth,
 }
+

@@ -20,7 +20,7 @@ public class BodyPartModelReference : MonoBehaviour
             {
                 if(child.gameObject.name == partName.ToString())
                 {
-                    initialModelParts.Add(new BodyPart(partName,child.gameObject,MaterialUtilities.getAllSharedMaterialsFromObject(child.gameObject),ReturnFirstActiveObject(child.gameObject)));
+                    initialModelParts.Add(new BodyPart(partName,child.gameObject,MaterialUtilities.getAllSharedMaterialsFromObject(child.gameObject),ReturnFirstActiveObject(child.gameObject),GetAdditionalActiveObjects(child.gameObject)));
                     
                 }
             }
@@ -30,15 +30,36 @@ public class BodyPartModelReference : MonoBehaviour
 
     private GameObject ReturnFirstActiveObject(GameObject parent)
     {
-        foreach (Transform child in parent.GetComponentsInChildren<Transform>())
-        {
-            if(child.gameObject != parent && child.gameObject.activeSelf)
+            foreach (Transform child in parent.GetComponentsInChildren<Transform>())
             {
-                return child.gameObject;
+                if(child.gameObject != parent && child.gameObject.activeSelf)
+                {
+                    return child.gameObject;
+                }
             }
-        }
         
         return null;
+    }
+
+    private List<GameObject> GetAdditionalActiveObjects(GameObject parent)
+    {
+        List<GameObject> additionalActiveObjects = new List<GameObject>();
+        int activeObjectCount = 0;
+        
+            foreach (Transform child in parent.GetComponentsInChildren<Transform>())
+            {
+                if(child.gameObject != parent && child.gameObject.activeSelf)
+                {
+                    activeObjectCount++;
+                    if(activeObjectCount > 1)
+                    {
+                        additionalActiveObjects.Add(child.gameObject);
+                    }
+                    
+                }
+            }
+
+        return additionalActiveObjects;
     }
 
     private void Start()
