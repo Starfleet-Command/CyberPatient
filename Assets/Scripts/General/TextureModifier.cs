@@ -15,7 +15,7 @@ public class TextureModifier : MonoBehaviour
     /// <param name="materialsToCopy">
     /// The materials that will provide their properties to be copied to the target.
     /// </param>
-    public void CopyTextures(GameObject target,List<Material> materialsToCopy)
+    public static void CopyTextures(GameObject target,List<Material> materialsToCopy)
     {
         List<Material> uniqueMaterialsInObject = MaterialUtilities.getAllMaterialsFromObject(target);
         
@@ -57,11 +57,49 @@ public class TextureModifier : MonoBehaviour
 
     }
 
-    public void UpdateTexture(string _attributeName, Material _material, bool isAttributeActive)
+    public static void UpdateStageTwoTexture(string _attributeName, GameObject texturedObject, Color newColor)
     {
-        if(isAttributeActive)
-            _material.SetInt(_attributeName,1);
-        else
-            _material.SetInt(_attributeName,0);
+        List<Material> uniqueMaterialsInObject = MaterialUtilities.getAllMaterialsFromObject(texturedObject);
+
+        foreach (Material uniqueMaterial in uniqueMaterialsInObject)
+        {
+            if(uniqueMaterial.HasProperty(_attributeName))
+            {
+                uniqueMaterial.SetColor(_attributeName,newColor);
+            }
+        }
+        
+
+    }
+    public static void UpdateTextureBool(string _attributeName, GameObject texturedObject, bool isAttributeActive)
+    {
+        List<Material> uniqueMaterialsInObject = MaterialUtilities.getAllMaterialsFromObject(texturedObject);
+
+        foreach (Material uniqueMaterial in uniqueMaterialsInObject)
+        {
+            if(uniqueMaterial.HasProperty(_attributeName))
+            {
+                if(isAttributeActive)
+                    uniqueMaterial.SetFloat(_attributeName,1.0f);
+                else
+                    uniqueMaterial.SetFloat(_attributeName,0.0f);
+            }
+        }
+        
+    }
+
+    public static void UpdateTextureFloat(string _attributeName, GameObject texturedObject, float newValue)
+    {
+        List<Material> uniqueMaterialsInObject = MaterialUtilities.getAllMaterialsFromObject(texturedObject);
+
+        foreach (Material uniqueMaterial in uniqueMaterialsInObject)
+        {
+            if(uniqueMaterial.HasProperty(_attributeName))
+            {
+                uniqueMaterial.SetFloat(_attributeName,newValue);
+            }
+        }
+        
+        
     }
 }

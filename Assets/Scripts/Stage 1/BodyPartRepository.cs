@@ -57,7 +57,7 @@ public class BodyPartRepository : MonoBehaviour
         for (int i = 0; i < bodyParts.Count; i++)
         {
             List<Material> bodyPartInitialMaterials = initialBodyParts[i].bodyPartMaterial;
-            levelData.textureModifierScript.CopyTextures(bodyParts[i].bodyPartMesh,bodyPartInitialMaterials);
+            TextureModifier.CopyTextures(bodyParts[i].bodyPartMesh,bodyPartInitialMaterials);
         }
 
         for (int i = 0; i < initialBodyParts.Count; i++)
